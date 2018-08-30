@@ -27,7 +27,7 @@ func (h *hproseSource) SetService(service *types.Service) {
 	ok := nil != h.service && h.service.Url != service.Url
 	h.service = service
 	if ok {
-		h.__switch_client()
+		h.__close()
 	}
 }
 
@@ -42,10 +42,11 @@ func (p *hproseSource) Reset() types.Source {
 }
 
 func (h *hproseSource) Close() error {
+	h.__close()
 	return nil
 }
 
-func (h *hproseSource) __switch_client() {
+func (h *hproseSource) __close() {
 	cli := h.__client()
 	if nil == cli {
 		return
