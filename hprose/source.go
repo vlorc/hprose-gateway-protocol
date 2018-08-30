@@ -51,18 +51,20 @@ func (h *hproseSource) __close() {
 	if nil == cli {
 		return
 	}
-	h.val.Store(nil)
+	h.val.Store(func() rpc.Client {
+		return nil
+	})
 	time.AfterFunc(time.Minute, func() {
 		cli.Close()
 	})
 }
 
 func (h *hproseSource) __client() rpc.Client {
-	cli, ok := h.val.Load().(rpc.Client)
+	cli, ok := h.val.Load().(func() rpc.Client)
 	if !ok {
 		return nil
 	}
-	return cli
+	return cli()
 }
 
 func (h *hproseSource) client() rpc.Client {
@@ -76,7 +78,9 @@ func (h *hproseSource) client() rpc.Client {
 		return cli
 	}
 	if cli = rpc.NewClient(h.service.Url); nil != cli {
-		h.val.Store(cli)
+		h.val.Store(func() rpc.Client {
+			return cli
+		})
 		return cli
 	}
 	return nil
