@@ -19,8 +19,8 @@ func (h *forwardSource) SetService(service *types.Service) {
 	if h.service = service; nil == service || len(service.Meta) <= 0 {
 		return
 	}
-	if it, ok := service.Meta["forward.id"]; ok {
-		h.id, ok = it.(string)
+	if k, ok := service.Meta["forward.id"]; ok {
+		h.id = k
 	} else {
 		h.id = ""
 	}

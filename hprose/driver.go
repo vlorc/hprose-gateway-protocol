@@ -3,7 +3,6 @@ package hprose
 import (
 	"github.com/vlorc/hprose-gateway-core/driver"
 	"github.com/vlorc/hprose-gateway-types"
-	_ "github.com/vlorc/hprose-go-nats"
 	"sync"
 )
 
